@@ -1,0 +1,14 @@
+{
+  "name": "akame",
+  "version": "1.0.0",
+  "description": "Template Name: Akame - Hair Salon HTML Template\r Template Author URI: https://colorlib.com/wp/template/akame/\r ----------------------------------------------------- _/",
+  "main": "gulp-config.js",
+  "dependencies": {},
+  "devDependencies": {
+    "ucd-theme-tasks": "^2.0.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": ""
+}

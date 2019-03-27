@@ -1,0 +1,4 @@
+name: d8-akame
+recipe: drupal8
+config:
+  webroot: .

@@ -1,0 +1,9 @@
+name: Akame
+type: theme
+description: 'A project to learn D8 theming.'
+core: 8.x
+base theme: classy
+libraries:
+  - akame/global-styling
+  - akame/global-scripts
+  - akame/font-awesome
