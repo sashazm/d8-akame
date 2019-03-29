@@ -32,10 +32,17 @@ $header-top-bp: 751px;
     @include breakpoint($header-top-bp) {
       display: flex;
     }
+
+    // targeting Drupal8 class to give margin between icon and text.
+    .field--name-body {
+      margin-left: .5rem;
+    }
   }
 
   &__time,
   &__phone-number {
+    display: flex;
+    align-items: center;
     margin: 0;
   }
 
