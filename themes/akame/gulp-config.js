@@ -71,7 +71,7 @@ module.exports = {
     watchFiles: [
       '**/*.twig'
     ],
-    domain: 'http://d8akame.lndo.site/',
+    domain: 'http://d8-akame.lndo.site/',
     baseDir: './',
     startPath: '/',
     openBrowserAtStart: true,
