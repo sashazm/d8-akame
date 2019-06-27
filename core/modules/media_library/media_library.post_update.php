@@ -5,6 +5,9 @@
  * Post update functions for Media library.
  */
 
+use Drupal\Core\Entity\Entity\EntityFormMode;
+use Drupal\Core\Entity\Entity\EntityViewMode;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\media\Entity\MediaType;
 use Drupal\views\Views;
 
@@ -12,6 +15,29 @@ use Drupal\views\Views;
  * Create and configure Media Library form and view displays for media types.
  */
 function media_library_post_update_display_modes() {
+  // Ensure the custom view and form modes are created.
+  $values = [
+    'id' => 'media.media_library',
+    'targetEntityType' => 'media',
+    'label' => t('Media library'),
+    'dependencies' => [
+      'enforced' => [
+        'module' => [
+          'media_library',
+        ],
+      ],
+      'module' => [
+        'media',
+      ],
+    ],
+  ];
+  if (!EntityViewMode::load('media.media_library')) {
+    EntityViewMode::create($values)->save();
+  }
+  if (!EntityFormMode::load('media.media_library')) {
+    EntityFormMode::create($values)->save();
+  }
+
   // The Media Library needs a special form display and view display to make
   // sure the Media Library is displayed properly. These were not automatically
   // created for custom media types, so let's make sure this is fixed.
@@ -184,4 +210,33 @@ function media_library_post_update_table_display() {
   $table_display->overrideOption('header', $display_links);
 
   $view->save();
+}
+
+/**
+ * Create the 'media_library' image style if necessary.
+ */
+function media_library_post_update_add_media_library_image_style() {
+  // Bail out early if the image style was already created by
+  // media_library_update_8701(), or manually by the site owner.
+  if (ImageStyle::load('media_library')) {
+    return;
+  }
+
+  $image_style = ImageStyle::create([
+    'name' => 'media_library',
+    'label' => 'Media Library (220x220)',
+  ]);
+  // Add a scale effect.
+  $image_style->addImageEffect([
+    'id' => 'image_scale',
+    'weight' => 0,
+    'data' => [
+      'width' => 220,
+      'height' => 220,
+      'upscale' => FALSE,
+    ],
+  ]);
+  $image_style->save();
+
+  return t('The %label image style has been created successfully.', ['%label' => 'Media Library (220x220)']);
 }

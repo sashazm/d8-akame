@@ -14,6 +14,8 @@ install:
   - config
   - contextual
   - contact
+  - layout_builder
+  - layout_discovery
   - menu_link_content
   - datetime
   - block_content
@@ -52,8 +54,8 @@ themes:
   - umami
 keep_english: true
 
-# Information added by Drupal.org packaging script on 2019-03-20
-version: '8.7.0-alpha2'
+# Information added by Drupal.org packaging script on 2019-06-05
+version: '8.7.3'
 core: '8.x'
 project: 'drupal'
-datestamp: 1553106232
+datestamp: 1559762708

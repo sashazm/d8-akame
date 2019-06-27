@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\media_library\FunctionalJavascript;
 
+use Drupal\Core\Url;
+use Drupal\field_ui\FieldUI;
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\media\Entity\Media;
 use Drupal\media_library\MediaLibraryState;
@@ -97,19 +99,19 @@ class MediaLibraryTest extends WebDriverTestBase {
 
     // Test that users can filter by type.
     $page->selectFieldOption('Media type', 'Type One');
-    $page->pressButton('Apply Filters');
+    $page->pressButton('Apply filters');
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->pageTextContains('Dog');
     $assert_session->pageTextNotContains('Turtle');
     $page->selectFieldOption('Media type', 'Type Two');
-    $page->pressButton('Apply Filters');
+    $page->pressButton('Apply filters');
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->pageTextNotContains('Dog');
     $assert_session->pageTextContains('Turtle');
 
     // Test that selecting elements as a part of bulk operations works.
     $page->selectFieldOption('Media type', '- Any -');
-    $page->pressButton('Apply Filters');
+    $page->pressButton('Apply filters');
     $assert_session->assertWaitOnAjaxRequest();
     // This tests that anchor tags clicked inside the preview are suppressed.
     $this->getSession()->executeScript('jQuery(".js-click-to-select-trigger a")[4].click()');
@@ -139,6 +141,135 @@ class MediaLibraryTest extends WebDriverTestBase {
     $assert_session->addressEquals('admin/content/media-table');
     // Verify that the "Add media" link is present.
     $assert_session->linkExists('Add media');
+  }
+
+  /**
+   * Tests that the widget works as expected when media types are deleted.
+   */
+  public function testWidgetWithoutMediaTypes() {
+    $assert_session = $this->assertSession();
+
+    $user = $this->drupalCreateUser([
+      'access administration pages',
+      'access content',
+      'create basic_page content',
+      'create media',
+      'view media',
+    ]);
+    $this->drupalLogin($user);
+
+    $default_message = 'There are no allowed media types configured for this field. Please contact the site administrator.';
+
+    $this->drupalGet('node/add/basic_page');
+
+    // Assert a properly configured field does not show a message.
+    $assert_session->elementTextNotContains('css', '.field--name-field-twin-media', 'There are no allowed media types configured for this field.');
+    $assert_session->elementExists('css', '.media-library-open-button[name^="field_twin_media"]');
+    // Assert that the message is shown when the target_bundles setting for the
+    // entity reference field is an empty array. No types are allowed in this
+    // case.
+    $assert_session->elementTextContains('css', '.field--name-field-empty-types-media', $default_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_empty_types_media"]');
+    // Assert that the message is not shown when the target_bundles setting for
+    // the entity reference field is null. All types are allowed in this case.
+    $assert_session->elementTextNotContains('css', '.field--name-field-null-types-media', 'There are no allowed media types configured for this field.');
+    $assert_session->elementExists('css', '.media-library-open-button[name^="field_null_types_media"]');
+
+    // Delete all media and media types.
+    $entity_type_manager = \Drupal::entityTypeManager();
+    $media_storage = $entity_type_manager->getStorage('media');
+    $media_type_storage = $entity_type_manager->getStorage('media_type');
+    $media_storage->delete($media_storage->loadMultiple());
+    $media_type_storage->delete($media_type_storage->loadMultiple());
+
+    // Visit a node create page.
+    $this->drupalGet('node/add/basic_page');
+
+    // Assert a properly configured field now shows a message.
+    $assert_session->elementTextContains('css', '.field--name-field-twin-media', $default_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_twin_media"]');
+    // Assert that the message is shown when the target_bundles setting for the
+    // entity reference field is an empty array.
+    $assert_session->elementTextContains('css', '.field--name-field-empty-types-media', $default_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_empty_types_media"]');
+    // Assert that the message is shown when the target_bundles setting for
+    // the entity reference field is null.
+    $assert_session->elementTextContains('css', '.field--name-field-null-types-media', $default_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_null_types_media"]');
+
+    // Assert a different message is shown when the user is allowed to
+    // administer the fields.
+    $user = $this->drupalCreateUser([
+      'access administration pages',
+      'access content',
+      'create basic_page content',
+      'view media',
+      'administer node fields',
+    ]);
+    $this->drupalLogin($user);
+
+    $route_bundle_params = FieldUI::getRouteBundleParameter(\Drupal::entityTypeManager()->getDefinition('node'), 'basic_page');
+
+    $field_twin_url = new Url('entity.field_config.node_field_edit_form', [
+      'field_config' => 'node.basic_page.field_twin_media',
+    ] + $route_bundle_params);
+    $field_twin_message = 'There are no allowed media types configured for this field. <a href="' . $field_twin_url->toString() . '">Edit the field settings</a> to select the allowed media types.';
+
+    $field_empty_types_url = new Url('entity.field_config.node_field_edit_form', [
+      'field_config' => 'node.basic_page.field_empty_types_media',
+    ] + $route_bundle_params);
+    $field_empty_types_message = 'There are no allowed media types configured for this field. <a href="' . $field_empty_types_url->toString() . '">Edit the field settings</a> to select the allowed media types.';
+
+    $field_null_types_url = new Url('entity.field_config.node_field_edit_form', [
+        'field_config' => 'node.basic_page.field_null_types_media',
+      ] + $route_bundle_params);
+    $field_null_types_message = 'There are no allowed media types configured for this field. <a href="' . $field_null_types_url->toString() . '">Edit the field settings</a> to select the allowed media types.';
+
+    // Visit a node create page.
+    $this->drupalGet('node/add/basic_page');
+
+    // Assert a properly configured field still shows a message.
+    $assert_session->elementContains('css', '.field--name-field-twin-media', $field_twin_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_twin_media"]');
+    // Assert that the message is shown when the target_bundles setting for the
+    // entity reference field is an empty array.
+    $assert_session->elementContains('css', '.field--name-field-empty-types-media', $field_empty_types_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_empty_types_media"]');
+    // Assert that the message is shown when the target_bundles setting for the
+    // entity reference field is null.
+    $assert_session->elementContains('css', '.field--name-field-null-types-media', $field_null_types_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_null_types_media"]');
+
+    // Assert the messages are also shown in the default value section of the
+    // field edit form.
+    $this->drupalGet($field_empty_types_url);
+    $assert_session->elementContains('css', '.field--name-field-empty-types-media', $field_empty_types_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_empty_types_media"]');
+    $this->drupalGet($field_null_types_url);
+    $assert_session->elementContains('css', '.field--name-field-null-types-media', $field_null_types_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_null_types_media"]');
+
+    // Uninstall the Field UI and check if the link is removed from the message.
+    \Drupal::service('module_installer')->uninstall(['field_ui']);
+
+    // Visit a node create page.
+    $this->drupalGet('node/add/basic_page');
+
+    $field_ui_uninstalled_message = 'There are no allowed media types configured for this field. Edit the field settings to select the allowed media types.';
+
+    // Assert the link is now longer part of the message.
+    $assert_session->elementNotExists('named', ['link', 'Edit the field settings']);
+    // Assert a properly configured field still shows a message.
+    $assert_session->elementContains('css', '.field--name-field-twin-media', $field_ui_uninstalled_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_twin_media"]');
+    // Assert that the message is shown when the target_bundles setting for the
+    // entity reference field is an empty array.
+    $assert_session->elementContains('css', '.field--name-field-empty-types-media', $field_ui_uninstalled_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_empty_types_media"]');
+    // Assert that the message is shown when the target_bundles setting for the
+    // entity reference field is null.
+    $assert_session->elementContains('css', '.field--name-field-null-types-media', $field_ui_uninstalled_message);
+    $assert_session->elementNotExists('css', '.media-library-open-button[name^="field_null_types_media"]');
   }
 
   /**
@@ -185,6 +316,29 @@ class MediaLibraryTest extends WebDriverTestBase {
     $this->drupalGet('media-library', $url_options);
     $assert_session->elementExists('css', '.view-media-library');
     $assert_session->fieldExists('Add files');
+
+    // Assert the media library can not be accessed if the required state
+    // parameters are changed without changing the hash.
+    $this->drupalGet('media-library', [
+      'query' => array_merge($url_options['query'], ['media_library_opener_id' => 'fail']),
+    ]);
+    $assert_session->responseContains('Access denied');
+    $this->drupalGet('media-library', [
+      'query' => array_merge($url_options['query'], ['media_library_allowed_types' => ['type_one', 'type_two']]),
+    ]);
+    $assert_session->responseContains('Access denied');
+    $this->drupalGet('media-library', [
+      'query' => array_merge($url_options['query'], ['media_library_selected_type' => 'type_one']),
+    ]);
+    $assert_session->responseContains('Access denied');
+    $this->drupalGet('media-library', [
+      'query' => array_merge($url_options['query'], ['media_library_remaining' => 3]),
+    ]);
+    $assert_session->responseContains('Access denied');
+    $this->drupalGet('media-library', [
+      'query' => array_merge($url_options['query'], ['hash' => 'fail']),
+    ]);
+    $assert_session->responseContains('Access denied');
   }
 
   /**
@@ -222,9 +376,10 @@ class MediaLibraryTest extends WebDriverTestBase {
     $page->find('css', '.ui-dialog-titlebar-close')->click();
     $assert_session->assertWaitOnAjaxRequest();
 
-    // Assert that the media type menu is available when no types are configured
-    // for the field. All types should be available in this case.
-    $assert_session->elementExists('css', '.media-library-open-button[name^="field_empty_types_media"]')->click();
+    // Assert that the media type menu is available when the target_bundles
+    // setting for the entity reference field is null. All types should be
+    // allowed in this case.
+    $assert_session->elementExists('css', '.media-library-open-button[name^="field_null_types_media"]')->click();
     $assert_session->assertWaitOnAjaxRequest();
     $menu = $assert_session->elementExists('css', '.media-library-menu');
     $this->assertTrue($menu->hasLink('Type One'));
@@ -298,12 +453,12 @@ class MediaLibraryTest extends WebDriverTestBase {
     $assert_session->assertWaitOnAjaxRequest();
     $session = $this->getSession();
     $session->getPage()->fillField('Name', 'Dog');
-    $session->getPage()->pressButton('Apply Filters');
+    $session->getPage()->pressButton('Apply filters');
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->pageTextContains('Dog');
     $assert_session->pageTextNotContains('Bear');
     $session->getPage()->fillField('Name', '');
-    $session->getPage()->pressButton('Apply Filters');
+    $session->getPage()->pressButton('Apply filters');
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->pageTextContains('Dog');
     $assert_session->pageTextContains('Bear');
@@ -334,7 +489,7 @@ class MediaLibraryTest extends WebDriverTestBase {
     $assert_session->pageTextNotContains('Turtle');
     // Assert the exposed filters can be applied.
     $page->fillField('Name', 'Dog');
-    $page->pressButton('Apply Filters');
+    $page->pressButton('Apply filters');
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->pageTextContains('Dog');
     $assert_session->pageTextNotContains('Bear');
@@ -390,7 +545,9 @@ class MediaLibraryTest extends WebDriverTestBase {
     // Assert the number of selected items is displayed correctly.
     $assert_session->elementExists('css', '.media-library-selected-count');
     $assert_session->elementTextContains('css', '.media-library-selected-count', '0 of 2 items selected');
+    $assert_session->elementAttributeContains('css', '.media-library-selected-count', 'role', 'status');
     $assert_session->elementAttributeContains('css', '.media-library-selected-count', 'aria-live', 'polite');
+    $assert_session->elementAttributeContains('css', '.media-library-selected-count', 'aria-atomic', 'true');
     // Select a media item, assert the hidden selection field contains the ID of
     // the selected item.
     $checkboxes = $page->findAll('css', '.media-library-view .js-click-to-select-checkbox input');
@@ -769,7 +926,7 @@ class MediaLibraryTest extends WebDriverTestBase {
     $assert_session->pageTextContains('Add or select media');
     $page->clickLink('Type Three');
     $assert_session->assertWaitOnAjaxRequest();
-    $png_uri_2 = $file_system->copy($png_image->uri);
+    $png_uri_2 = $file_system->copy($png_image->uri, 'public://');
     $page->attachFileToField('Add files', $this->container->get('file_system')->realpath($png_uri_2));
     $assert_session->assertWaitOnAjaxRequest();
     $page->fillField('Alternative text', $this->randomString());
@@ -793,7 +950,7 @@ class MediaLibraryTest extends WebDriverTestBase {
     $checkbox->click();
     $assert_session->pageTextContains('1 item selected');
     $assert_session->hiddenFieldValueEquals('current_selection', $selected_item_id);
-    $png_uri_3 = $file_system->copy($png_image->uri);
+    $png_uri_3 = $file_system->copy($png_image->uri, 'public://');
     $page->attachFileToField('Add files', $this->container->get('file_system')->realpath($png_uri_3));
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->checkboxChecked("Select $existing_media_name");
@@ -843,18 +1000,18 @@ class MediaLibraryTest extends WebDriverTestBase {
 
     // Assert media type four should only allow jpg files by trying a png file
     // first.
-    $png_uri_4 = $file_system->copy($png_image->uri);
+    $png_uri_4 = $file_system->copy($png_image->uri, 'public://');
     $page->attachFileToField('Add file', $file_system->realpath($png_uri_4));
     $assert_session->assertWaitOnAjaxRequest();
     $assert_session->pageTextContains('Only files with the following extensions are allowed');
     // Assert that jpg files are accepted by type four.
-    $jpg_uri_2 = $file_system->copy($jpg_image->uri);
+    $jpg_uri_2 = $file_system->copy($jpg_image->uri, 'public://');
     $page->attachFileToField('Add file', $file_system->realpath($jpg_uri_2));
     $assert_session->assertWaitOnAjaxRequest();
     $page->fillField('Alternative text', $this->randomString());
     // The type_four media type has another optional image field.
     $assert_session->pageTextContains('Extra Image');
-    $jpg_uri_3 = $file_system->copy($jpg_image->uri);
+    $jpg_uri_3 = $file_system->copy($jpg_image->uri, 'public://');
     $page->attachFileToField('Extra Image', $this->container->get('file_system')->realpath($jpg_uri_3));
     $assert_session->assertWaitOnAjaxRequest();
     // Ensure that the extra image was uploaded to the correct directory.
@@ -885,7 +1042,7 @@ class MediaLibraryTest extends WebDriverTestBase {
     $checkbox->click();
     $assert_session->hiddenFieldValueEquals('current_selection', $selected_item_id);
     $this->assertTrue($assert_session->fieldExists('Add files')->hasAttribute('multiple'));
-    $png_uri_5 = $file_system->copy($png_image->uri);
+    $png_uri_5 = $file_system->copy($png_image->uri, 'public://');
     $page->attachFileToField('Add files', $this->container->get('file_system')->realpath($png_uri_5));
     $assert_session->assertWaitOnAjaxRequest();
     // Assert the pre-selected items are shown.
@@ -895,6 +1052,10 @@ class MediaLibraryTest extends WebDriverTestBase {
     $page->uncheckField("Select $existing_media_name");
     $page->fillField('Alternative text', $this->randomString());
     $assert_session->hiddenFieldValueEquals('current_selection', '');
+    // Close the details element so that clicking the Save and select works.
+    // @todo Fix dialog or test so this is not necessary to prevent random
+    //   fails. https://www.drupal.org/project/drupal/issues/3055648
+    $this->click('details.media-library-add-form__selected-media summary');
     $assert_session->elementExists('css', '.ui-dialog-buttonpane')->pressButton('Save and select');
     $assert_session->assertWaitOnAjaxRequest();
     $media_items = Media::loadMultiple();
@@ -951,7 +1112,7 @@ class MediaLibraryTest extends WebDriverTestBase {
     $filenames = [];
     $remote_paths = [];
     foreach (range(1, 3) as $i) {
-      $path = $file_system->copy($png_image->uri);
+      $path = $file_system->copy($png_image->uri, 'public://');
       $filenames[] = $file_system->basename($path);
       $remote_paths[] = $driver->uploadFileAndGetRemoteFilePath($file_system->realpath($path));
     }
@@ -1168,6 +1329,10 @@ class MediaLibraryTest extends WebDriverTestBase {
     $assert_session->checkboxChecked("Select $vimeo_title", $selection_area);
     $page->uncheckField("Select $vimeo_title");
     $assert_session->hiddenFieldValueEquals('current_selection', '');
+    // Close the details element so that clicking the Save and select works.
+    // @todo Fix dialog or test so this is not necessary to prevent random
+    //   fails. https://www.drupal.org/project/drupal/issues/3055648
+    $this->click('details.media-library-add-form__selected-media summary');
     $assert_session->elementExists('css', '.ui-dialog-buttonpane')->pressButton('Save and select');
     $assert_session->assertWaitOnAjaxRequest();
     $media_items = Media::loadMultiple();
