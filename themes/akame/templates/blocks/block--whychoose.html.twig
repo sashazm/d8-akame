@@ -1,0 +1,42 @@
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+    'l-vertical-space',
+    'section-highlight'
+  ]
+%}
+<section {{ attributes.addClass(classes) }}>
+  {{ title_suffix }}
+  {# content.field_title.0["#context"].value #}
+  <div class="l-container why-choose">
+    <div class="why-choose__image">
+      {{content.field_image}}
+    </div>
+    <section>
+      <header>
+        <h1>{{content.field_title.0['#context'].value|striptags}}</h1>
+        {{content.body}}
+      </header>
+  <ul class="why-choose__list">
+    {% for key, item in content.field_unordered_list if key|first != '#' %}
+      <li><i class="fas fa-check checkbox checkbox__check checkbox__check--alt"></i>{{ item }}</li>
+    {% endfor %}
+  </ul>
+
+      {# <ul class="why-choose__list">
+        <li><i class="fas fa-check checkbox checkbox__check checkbox__check--alt"></i>{{content.field_unordered_list.0['#context'].value|striptags}}</li>
+        <li><i class="fas fa-check checkbox checkbox__check checkbox__check--alt"></i>test</li>
+        <li><i class="fas fa-check checkbox checkbox__check checkbox__check--alt"></i>test</li>
+        <li><i class="fas fa-check checkbox checkbox__check checkbox__check--alt"></i>test</li>
+      </ul> #}
+    </section>
+  </div>
+  {{ content|without('field_title', 'body', 'field_image', 'field_unordered_list') }}
+</section>
+
+  {# {{ title_suffix }}
+  testy test
+  {{ content }}
+   #}
