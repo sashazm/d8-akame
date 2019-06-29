@@ -1,0 +1,24 @@
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+    'section-highlight',
+    'call-to-action'
+  ]
+%}
+<div {{ attributes.addClass(classes) }}>
+  {{ title_suffix }}
+  {# content.field_title.0["#context"].value #}
+  <div class="l-container call-to-action__body">
+    {# To allow html inside the title, we will pipe the title value into "raw" #}
+    <h1>{{ content.field_title.0['#context'].value|striptags('<br>')|raw }}</h1>
+    <p class="call-to-action__text">{{ content.body }}</p>
+    <div>
+      <a href="#" class="button button--alt call-to-action__button">{{ content.field_button_primary.0['#title'] }}</a>
+      <a href="#" class="button">{{ content.field_button_secondary.0['#title'] }}</a>
+    </div>
+  </div>
+  {{ content|without('field_title', 'body', 'field_button_primary', 'field_button_secondary') }}
+</div>
+
