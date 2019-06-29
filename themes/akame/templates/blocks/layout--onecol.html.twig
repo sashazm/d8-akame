@@ -7,19 +7,6 @@
 {% if content %}
 <section {{ attributes.addClass(classes) }}>
 {{ content.content }}
-{# <div class="welcome-banner">
-{{ title_suffix }}
-  <div {{ region_attributes.content.addClass('layout__region', 'layout__region--content', 'l-container') }}class=>
-    <div class="welcome-banner__container"> #}
-
-      {# To allow html inside the title, we will pipe the title value into "raw" #}
-      {# <h1 class="welcome-banner__title">{{ content.field_title.0['#context'].value|striptags('<br>')|raw}}</h1>
-      <p class="welcome-banner__text">{{ content.body }}</p>
-      <a href="#" class="button button--alt">{{ content.field_button_primary.0['#title'] }}</a> #}
-    {# </div> #}
-  {# </div> #}
-  {# {{ content|without('field_title', 'body', 'field_button_primary') }} #}
-{# </div> #}
 </section>
 {% endif %}
 
