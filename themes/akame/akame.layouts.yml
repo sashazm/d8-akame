@@ -1,0 +1,14 @@
+intro_section:
+  label: Intro section
+  category: My Layouts
+  template: templates/intro-section
+  theme: akame
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+    third:
+      label: Third
+  icon_map:
+    - [first, second, third]

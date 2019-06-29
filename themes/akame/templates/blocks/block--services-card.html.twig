@@ -1,0 +1,15 @@
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+    'services__box'
+  ]
+%}
+<article {{ attributes.addClass(classes) }}>
+  {{ title_suffix }}
+  {{content.field_image}}
+  <h4>{{content.field_title.0}}</h4>
+  {{content.body}}
+  {{ content|without('field_title', 'body', 'field_image') }}
+</article>
