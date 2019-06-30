@@ -1,0 +1,15 @@
+{# a block to generate markup for the intro section text block #}
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+  ]
+%}
+{{ title_suffix }}
+<div {{ attributes.addClass(classes) }}>
+  <h2 class="intro__title">{{ content.field_title.0 }}</h2>
+  <p class="intro__text">{{ content.body }}</p>
+  <a href="#" class="button button--alt">{{ content.field_button_primary.0['#title'] }}</a>
+  {{ content|without('field_title', 'body', 'field_button_primary') }}
+</div>
