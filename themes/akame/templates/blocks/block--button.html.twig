@@ -1,0 +1,11 @@
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+    'button--centered'
+  ]
+%}
+<div {{ attributes.addClass(classes) }}>
+  <a href="#" class="button">{{ content.field_button_primary.0['#title'] }}</a>
+</div>

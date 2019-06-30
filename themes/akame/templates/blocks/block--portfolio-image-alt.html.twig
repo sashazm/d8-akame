@@ -1,0 +1,18 @@
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+    'portfolio__item',
+    'image-featured'
+  ]
+%}
+<article {{ attributes.addClass(classes) }}>
+  {{ title_suffix }}
+  <div class="portfolio__image">{{content.field_image}}</div>
+  <div class="portfolio__text portfolio--overlay">
+    <h3>{{content.field_title.0}}</h3>
+    <p>{{content.field_text.0}}</p>
+  </div>
+  <i class="fas fa-search portfolio-icon portfolio--overlay"></i>
+</article>
