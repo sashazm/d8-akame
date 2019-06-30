@@ -32,3 +32,27 @@ services_section:
   icon_map:
     - [top]
     - [first, second, third, fourth]
+
+our_work_section:
+  label: Our Work section
+  category: My Layouts
+  template: templates/layouts/our-work-section
+  theme: akame
+  regions:
+    top:
+      label: Top
+    nav:
+      label: Navigation
+    first:
+      label: First
+    second:
+      label: Second
+    third:
+      label: Third
+    link:
+      label: link
+  icon_map:
+    - [top]
+    - [nav]
+    - [first, second, third]
+    - [link]

@@ -1,0 +1,7 @@
+<ul class="menu menu--alt">
+  {{ title_suffix }}
+  {% for key, item in content.field_navigation_button if key|first != '#' %}
+    <li><button class="menu__link">{{ item }}</button></li>
+  {% endfor %}
+  {{ content|without('field_navigation_button') }}
+</ul>
