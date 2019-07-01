@@ -8,12 +8,11 @@
   ]
 %}
 <header {{ attributes.addClass(classes) }}>
-{{ title_suffix }}
+  {{ title_suffix }}
   <div class="intro__front">
     <h1 class="front__title">{{ content.field_primary_title.0 }}</h1>
     <p>{{ content.field_secondary_title.0['#context'].value|striptags('&amp;')|raw }}</p>
   </div>
   <span class="intro__back">{{ content.field_section_title.0 }}</span>
-{{ content|without('field_primary_title', 'field_secondary_title', 'field_section_title') }}
+  {{ content|without('field_primary_title', 'field_secondary_title', 'field_section_title') }}
 </header>
-

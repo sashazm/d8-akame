@@ -1,7 +1,16 @@
-<ul class="menu menu--alt">
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+    'menu',
+    'menu--alt'
+  ]
+%}
+<ul class=" menu--alt">
   {{ title_suffix }}
   {% for key, item in content.field_navigation_button if key|first != '#' %}
     <li><button class="menu__link">{{ item }}</button></li>
   {% endfor %}
-  {{ content|without('field_navigation_button') }}
+  {{ content|without('field_navigation_button', 'item') }}
 </ul>

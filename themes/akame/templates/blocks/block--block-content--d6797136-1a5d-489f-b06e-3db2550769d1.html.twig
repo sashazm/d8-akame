@@ -9,7 +9,6 @@
 %}
 <div {{ attributes.addClass(classes) }}>
   {{ title_suffix }}
-  {# content.field_title.0["#context"].value #}
   <div class="l-container call-to-action__body">
     {# To allow html inside the title, we will pipe the title value into "raw" #}
     <h1>{{ content.field_title.0['#context'].value|striptags('<br>')|raw }}</h1>
@@ -21,4 +20,3 @@
   </div>
   {{ content|without('field_title', 'body', 'field_button_primary', 'field_button_secondary') }}
 </div>
-

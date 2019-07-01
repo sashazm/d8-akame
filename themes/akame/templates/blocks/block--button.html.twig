@@ -7,5 +7,7 @@
   ]
 %}
 <div {{ attributes.addClass(classes) }}>
+  {{ title_suffix }}
   <a href="#" class="button">{{ content.field_button_primary.0['#title'] }}</a>
+  {{ content|without('field_button_primary') }}
 </div>

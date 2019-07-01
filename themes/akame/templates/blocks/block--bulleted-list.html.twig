@@ -9,7 +9,6 @@
 %}
 <section {{ attributes.addClass(classes) }}>
   {{ title_suffix }}
-  {# content.field_title.0["#context"].value #}
   <div class="l-container why-choose">
     <div class="why-choose__image">
       {{content.field_image}}
@@ -19,14 +18,12 @@
         <h1>{{content.field_title.0['#context'].value|striptags}}</h1>
         {{content.body}}
       </header>
-  <ul class="why-choose__list">
-    {% for key, item in content.field_unordered_list if key|first != '#' %}
-      <li><i class="fas fa-check checkbox checkbox__check checkbox__check--alt"></i>{{ item }}</li>
-    {% endfor %}
-  </ul>
-
+      <ul class="why-choose__list">
+        {% for key, item in content.field_unordered_list if key|first != '#' %}
+        <li><i class="fas fa-check checkbox checkbox__check checkbox__check--alt"></i>{{ item }}</li>
+        {% endfor %}
+      </ul>
     </section>
   </div>
   {{ content|without('field_title', 'body', 'field_image', 'field_unordered_list') }}
 </section>
-

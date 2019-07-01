@@ -15,4 +15,5 @@
     <p>{{content.body}}</p>
   </div>
   <i class="fas fa-search portfolio-icon portfolio--overlay"></i>
+  {{ content|without('field_image', 'body', 'field_title') }}
 </article>
