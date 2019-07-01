@@ -7,7 +7,7 @@
     'menu--alt'
   ]
 %}
-<ul class=" menu--alt">
+<ul {{ attributes.addClass(classes) }}>
   {{ title_suffix }}
   {% for key, item in content.field_navigation_button if key|first != '#' %}
     <li><button class="menu__link">{{ item }}</button></li>
