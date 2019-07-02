@@ -16,25 +16,25 @@
 
     <div class="l-container experts__overlap">
       {% if content.first %}
-        <div {{ region_attributes.first.addClass('layout__region', 'layout__region--first') }}>
+        <div {{ region_attributes.first.addClass('layout__region', 'layout__region--first', 'single-expert') }}>
           {{ content.first }}
         </div>
       {% endif %}
 
       {% if content.second %}
-        <div {{ region_attributes.second.addClass('layout__region', 'layout__region--second') }}>
+        <div {{ region_attributes.second.addClass('layout__region', 'layout__region--second', 'single-expert') }}>
           {{ content.second }}
         </div>
       {% endif %}
 
       {% if content.third %}
-        <div {{ region_attributes.third.addClass('layout__region', 'layout__region--third') }}>
+        <div {{ region_attributes.third.addClass('layout__region', 'layout__region--third', 'single-expert') }}>
           {{ content.third }}
         </div>
       {% endif %}
 
       {% if content.fourth %}
-        <div {{ region_attributes.fourth.addClass('layout__region', 'layout__region--fourth') }}>
+        <div {{ region_attributes.fourth.addClass('layout__region', 'layout__region--fourth', 'single-expert') }}>
           {{ content.fourth }}
         </div>
       {% endif %}
