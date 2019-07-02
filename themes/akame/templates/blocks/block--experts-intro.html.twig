@@ -1,0 +1,23 @@
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+  ]
+%}
+<div {{ attributes.addClass(classes) }}>
+  {{ title_suffix }}
+
+  <header>
+    <h1>{{content.field_title.0}}</h1>
+    {{content.body}}
+  </header>
+
+  <aside class="experts__award-wrapper">
+    {% for key, item in content.field_image if key|first != '#' %}
+      <div class="experts__award">{{ item }}</div>
+    {% endfor %}
+  </aside>
+
+  {{ content|without('field_title', 'body', 'field_image') }}
+</div>

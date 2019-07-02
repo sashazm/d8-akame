@@ -56,3 +56,23 @@ our_work_section:
     - [nav]
     - [first, second, third]
     - [link]
+
+experts_section:
+  label: Experts section
+  category: My Layouts
+  template: templates/layouts/experts-section
+  theme: akame
+  regions:
+    top:
+      label: Top
+    first:
+      label: First
+    second:
+      label: Second
+    third:
+      label: Third
+    fourth:
+      label: Fourth
+  icon_map:
+    - [top]
+    - [first, second, third, fourth]
