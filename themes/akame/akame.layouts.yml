@@ -76,3 +76,17 @@ experts_section:
   icon_map:
     - [top]
     - [first, second, third, fourth]
+
+blogpost_teaser:
+  label: Latest Blogposts Section
+  category: My Layouts
+  template: templates/layouts/blogpost-teaser
+  theme: akame
+  regions:
+    header:
+      label: Header
+    teaser:
+      label: Teaser
+  icon_map:
+    - [header]
+    - [teaser]

@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Akame theme implementation for a three-column layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ */
+#}
+
+{%
+  set classes = [
+    'l-container',
+    'l-vertical-space'
+  ]
+%}
+{% if content %}
+  <section {{ attributes.addClass(classes) }}>
+    {% if content.header %}
+      <header {{ region_attributes.header.addClass('layout__region', 'layout__region--header', 'l-vertical-space') }}>
+        <div class="u-centered">
+          {{ content.header }}
+        </div>
+      </header>
+    {% endif %}
+
+    {% if content.teaser %}
+      <div {{ region_attributes.teaser.addClass('layout__region', 'layout__region--teaser') }}>
+        {{ content.teaser }}
+      </div>
+    {% endif %}
+  </section>
+  <div class="l-container section__border"></div>
+{% endif %}
