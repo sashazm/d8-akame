@@ -7,3 +7,10 @@ libraries:
   - akame/global-styling
   - akame/global-scripts
   - akame/font-awesome
+regions:
+  header: 'Header'
+  primary_menu: 'Primary Menu'
+  content: 'Content'
+  footer: 'Footer'
+  highlighted: 'Highlighted'
+  branding: 'Branding'
