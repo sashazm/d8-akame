@@ -36,6 +36,6 @@
 <div{{ attributes.addClass(classes) }}>
   {{ title_suffix }}
   <span class="header-top__pipe">|</span><i class="fas fa-phone fa-rotate-90"></i>
-  {{ content }}
-  {{ content|without('content') }}
+  {{ content.body }}
+  {{ content|without('body') }}
 </div>

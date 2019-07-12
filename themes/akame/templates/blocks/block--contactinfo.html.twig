@@ -36,6 +36,6 @@
 <div{{ attributes.addClass(classes) }}>
   <h3{{ title_attributes.addClass('footer__title') }}>{{ label }}</h3>
   {{ title_suffix }}
-  {{ content }}
-  {{ content|without('label', 'content') }}
+  {{ content.body }}
+  {{ content|without('label', 'body') }}
 </div>
