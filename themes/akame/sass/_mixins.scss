@@ -52,7 +52,7 @@
 }
 
 @mixin color-mask($color: #fff) {
-  content: '';
+  content: "";
   top: 0;
   right: 0;
   left: 0;
