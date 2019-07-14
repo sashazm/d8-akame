@@ -43,75 +43,43 @@
  */
 #}
 <div class="layout-container">
-
-  <header role="banner">
-    {# {{ page.header }} #}
-  </header>
   <!-- Header Area Start -->
-<header>
-  <!-- Top Header Area Start -->
-  <section class="header-top">
-    <div class="l-container header-top__container">
-      <p class="header-top__greeting">Welcome to hair salon!</p>
-      <div class="header-top__info">
-        {{ page.header }}
+  <header role="banner">
+    <!-- Top Header Area Start -->
+    <section class="header-top">
+      <div class="l-container header-top__container">
+        <p class="header-top__greeting">Welcome to hair salon!</p>
+        <div class="header-top__info">
+          {{ page.header }}
+        </div>
       </div>
-    </div>
-  </section>
-  <!-- Top Header Area End -->
+    </section>
+    <!-- Top Header Area End -->
 
-  <!-- Main Header Start -->
-  <section class="header-main">
-    <div class="l-container header-main__container">
-      <!-- Logo -->
-      <a href="/"><img src="images/logo.png" alt="Company Logo" class="header-main__logo"/></a>
+    <!-- Main Header Start -->
+    <section class="header-main">
+      <div class="l-container header-main__container">
+        <!-- Logo -->
+        {# <a href="/"><img src="logo.png" alt="Company Logo" class="header-main__logo"/></a> #}
+        {{page.branding}}
 
-      <!-- Nav Main Toggle -->
-      <div class="nav-toggle js-main-nav-toggle">
-        <span class="nav-toggle__icon"></span>
-      </div>
-
-      <!-- Nav Start -->
-      <nav class="header-main__nav">
-
-        <!-- Mobile Menu Toggle -->
-        <div class="nav-toggle nav-toggle--mobile nav-toggle--active js-menu-toggle">
+        <!-- Nav Main Toggle -->
+        <div class="nav-toggle js-main-nav-toggle">
           <span class="nav-toggle__icon"></span>
         </div>
 
-        <ul class="menu menu--main menu--push">
-          <li><a href="/" class="menu__link">Home</a></li>
-          <li><a href="/page.html" class="menu__link">Pages</a></li>
-          <li><a href="#" class="menu__link">Portfolio</a></li>
-          <li><a href="#" class="menu__link">Services</a></li>
-          <li><a href="#" class="menu__link">About Us</a></li>
-          <li><a href="#" class="menu__link">Blog</a></li>
-          <li><a href="#" class="menu__link">Contact</a></li>
-        </ul>
+        <!-- Nav Start -->
+          {{ page.primary_menu }}
+      </div>
+    </section>
+  </header>
 
-        <!-- Cart Icon -->
-        <a href="#" class="header-main__cart"><i class="fas fa-shopping-cart"></i></a>
+  <!-- Header Area End -->
 
-        <!-- Book Link -->
-        <div class="header-main__booking">
-          <a href="#" class="button">Book Now</a>
-        </div>
-      </nav>
-      <!-- Nav End -->
-    </div>
-  </section>
-</header>
 
-<!-- Header Area End -->
+  {# {{ page.highlighted }} #}
 
-  {{ page.primary_menu }}
-  {{ page.secondary_menu }}
-
-  {{ page.breadcrumb }}
-
-  {{ page.highlighted }}
-
-  {{ page.help }}
+  {# {{ page.help }} #}
 
   <main role="main">
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
@@ -119,27 +87,11 @@
     <div class="layout-content">
       {{ page.content }}
     </div>{# /.layout-content #}
-
-    {% if page.sidebar_first %}
-      <aside class="layout-sidebar-first" role="complementary">
-        {{ page.sidebar_first }}
-      </aside>
-    {% endif %}
-
-    {% if page.sidebar_second %}
-      <aside class="layout-sidebar-second" role="complementary">
-        {{ page.sidebar_second }}
-      </aside>
-    {% endif %}
-
   </main>
-
 
   <footer role="contentinfo">
     <div class="l-container l-vertical-space footer">
       {{ page.footer }}
     </div>
   </footer>
-
-
 </div>{# /.layout-container #}
