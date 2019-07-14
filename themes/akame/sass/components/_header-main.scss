@@ -53,16 +53,16 @@
   // Positioning end styling
   &__cart {
     // Mobile
-    grid-row: 2; // when toggle is present
+    grid-row: 1; // when toggle is present
+    grid-column: 1;
     justify-self: start;
-    padding: 0 0 1rem 20px;
+    padding: 2.5rem 0 1rem 20px;
     color: $black;
 
     @include breakpoint($bp-nav-big) {
       justify-self: center;
       padding: 0;
       grid-column: 2;
-      grid-row: 1;
     }
   }
 

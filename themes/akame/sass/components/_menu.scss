@@ -12,7 +12,6 @@
 
   &__link {
     display: block;
-    text-decoration: none;
     // Button overrides for '_our work'
     background: none;
     border: 0;
@@ -89,4 +88,10 @@
       color: $brand-color;
     }
   }
+}
+
+// Drupal menu item styling override
+
+ul.menu {
+  margin-left: 0;
 }
