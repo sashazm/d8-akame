@@ -43,3 +43,4 @@ sites/simpletest
 
 # Ignore local Lando file
 .lando.local.yml
+*.gz
