@@ -8,3 +8,17 @@ function akame_theme_suggestions_block_alter(array &$suggestions, array $variabl
     array_splice($suggestions, 1, 0, 'block__' . $variables['elements']['content']['#block_content']->bundle());
   }
 }
+
+function akame_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'comment_comment_form') {
+    $form['field_your_name']['widget'][0]['value']['#title_display'] = 'invisible';
+    $form['field_email']['widget'][0]['value']['#title_display'] = 'invisible';
+    $form['actions']['submit']['#attributes'] = [
+      'class' => [
+        'button',
+        'button--alt',
+        'comment-form__button'
+      ],
+    ];
+  }
+}
