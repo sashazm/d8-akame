@@ -1,0 +1,32 @@
+{#
+/**
+ * @file
+ * Theme override for an 'input' #type form element.
+ *
+ * Available variables:
+ * - attributes: A list of HTML attributes for the input element.
+ * - children: Optional additional rendered elements.
+ *
+ * @see template_preprocess_input()
+ */
+#}
+{%
+  set classes = [
+        'button',
+        'button--alt',
+        'comment-form__button'
+  ]
+%}
+
+{%
+    set classesAlt = [
+        'button',
+        'comment-form__button'
+  ]
+%}
+
+ {% if attributes.id == 'edit-submit' %}
+    <button{{ attributes.addClass(classes)}}>{{ 'Submit Comment' }}</button>
+    {% else %}
+      <button{{ attributes.addClass(classesAlt)}}>{{ 'Preview Comment' }}</button>
+  {% endif %}
