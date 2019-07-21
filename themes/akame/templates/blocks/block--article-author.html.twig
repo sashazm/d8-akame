@@ -1,0 +1,39 @@
+{#
+Blog Article Author
+ #}
+
+{%
+  set classes = [
+    'author'
+  ]
+%}
+
+<footer {{ attributes.addClass(classes) }}>
+
+  <!-- Author Meta -->
+  <div class="author__info">
+  <div class='author__image image-circle'>{{ content.field_single_image }}</div>
+
+
+
+    <div class="author__name">
+      {{ title_suffix }}
+      <h4>{{content.field_title.0}}</h4>
+    </div>
+  </div>
+
+  <!-- Author Social Info -->
+  <div class="social-media author__social-media">
+    <a class="social-icon social-icon--facebook" href="#">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+    <a class="social-icon social-icon--twitter" href="#">
+      <i class="fab fa-twitter"></i>
+    </a>
+    <a class="social-icon social-icon--instagram" href="#">
+      <i class="fab fa-instagram"></i>
+    </a>
+  </div>
+{{ content|without('field_title', 'link', 'field_single_image') }}
+
+</footer>

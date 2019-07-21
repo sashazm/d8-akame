@@ -1,12 +1,12 @@
-$image-circle__size: 60px !default;
+$image-circle-size: 60px !default;
 
 .image-circle {
-  width: $image-circle__size;
-  height: $image-circle__size;
+  width: $image-circle-size;
+  height: $image-circle-size;
   display: inline-block;
   text-align: center;
   color: $white;
-  border-radius: 50%;
-  line-height: $image-circle__size;
+  clip-path: circle(50%);
+  line-height: $image-circle-size;
   margin: 1em .3em;
 }

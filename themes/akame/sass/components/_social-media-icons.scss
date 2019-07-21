@@ -1,13 +1,13 @@
-$social-icon__size: 40px !default;
+$social-icon-size: 40px !default;
 
 .social-icon {
-  width: $social-icon__size;
-  height: $social-icon__size;
+  width: $social-icon-size;
+  height: $social-icon-size;
   display: inline-block;
   text-align: center;
   color: $white;
   border-radius: 50%;
-  line-height: $social-icon__size;
+  line-height: $social-icon-size;
   margin: 1em .3em;
 }
 

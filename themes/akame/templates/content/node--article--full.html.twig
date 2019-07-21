@@ -82,15 +82,11 @@
   ]
 %}
 
-{# {%
-  set akameTitleClasses = [
-    'article__title-text'
-  ]
-%} #}
-
 {{ attach_library('classy/node') }}
 <div class="section__border section__border--start"></div>
+{# Blog Details Area Start #}
 <article{{ attributes.addClass(classes) }}>
+
   <header class="article__title">
     {% if display_submitted %}
       <div>
@@ -108,16 +104,24 @@
       </h1>
     {{ title_suffix }}
   </header>
+
   <div class="article__image">{{content.field_image}}</div>
+
   <div class="article__2col">
+    {# Post Share #}
     <div class="social-media social-media--vertical">
       <a href="#" class="social-icon social-icon--facebook"><i class="fab fa-facebook-f"></i></a>
       <a href="#" class="social-icon social-icon--twitter"><i class="fab fa-twitter"></i></a>
       <a href="#" class="social-icon social-icon--google-plus"><i class="fab fa-google-plus-g"></i></a>
       <a href="#" class="social-icon social-icon--instagram"><i class="fab fa-instagram"></i></a>
     </div>
+
     <section class="article__body">
+      {# Post Content #}
       <section class="article__text">{{ content|without('field_image') }}</section>
+      {# Border #}
+      <div class="section__border section__border--end"></div>
+      {# Post Author Area #}
     </section>
   </div>
 </article>
