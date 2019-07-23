@@ -9,6 +9,12 @@ function akame_theme_suggestions_block_alter(array &$suggestions, array $variabl
   }
 }
 
+function akame_theme_suggestions_user_alter(array &$suggestions, array $variables)
+{
+  // Create a theme hook suggestion which has the view mode name in it.
+  $suggestions[] = 'user__' . $variables['elements']['#view_mode'];
+}
+
 function akame_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'comment_comment_form') {
     $form['field_your_name']['widget'][0]['value']['#title_display'] = 'invisible';
