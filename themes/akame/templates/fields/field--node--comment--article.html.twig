@@ -39,6 +39,8 @@
 {%
   set title_classes = [
     'title',
+    'comment-form__title',
+    'comment-form__title--alt',
     label_display == 'visually_hidden' ? 'visually-hidden',
   ]
 %}
@@ -52,6 +54,5 @@
     <h2{{ title_attributes.addClass(title_classes) }}>{{ label }}</h2>
     {{ title_suffix }}
   {% endif %}
-
   {{ comments }}
 </aside>

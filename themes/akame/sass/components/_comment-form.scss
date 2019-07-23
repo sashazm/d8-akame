@@ -19,6 +19,10 @@
     @include breakpoint($bp-small) {
       font-size: 2rem;
     }
+
+    &--alt {
+      margin-top: 6rem;
+    }
   }
 
   &__button {

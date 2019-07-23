@@ -81,12 +81,14 @@
     'article',
   ]
 %}
-
+{# user variable #}
+{%
+  set user = node.getOwner()
+%}
 {{ attach_library('classy/node') }}
 <div class="section__border section__border--start"></div>
 {# Blog Details Area Start #}
 <article{{ attributes.addClass(classes) }}>
-
   <header class="article__title">
     {% if display_submitted %}
       <div>
@@ -118,10 +120,39 @@
 
     <section class="article__body">
       {# Post Content #}
-      <section class="article__text">{{ content|without('field_image') }}</section>
-      {# Border #}
-      <div class="section__border section__border--end"></div>
+      <section class="article__text">{{ content.body }}</section>
       {# Post Author Area #}
+      <div class="section__border section__border--end"></div>
+      <footer{{attributes.addClass('author')}}>
+        {# Author Meta #}
+        <div class="author__info">
+          <div class='author__image image-circle'>{{ author_picture }}</div>
+          <div class="author__name">
+            {{ title_suffix }}
+            <p>Guest Writer</p>
+            <h4>{{ user.field_full_name.0.value }}</h4>
+          </div>
+        </div>
+        {# Author Social Info #}
+        <div class="social-media author__social-media">
+          {% for key, item in user.field_social_links if key|first != '#' %}
+            {% if 'facebook' in item.uri %}
+              <a href={{item.uri}} class='social-icon social-icon--facebook'>
+                <i class="fab fa-facebook-f"></i></a>
+            {% endif %}
+            {% if 'twitter' in item.uri %}
+              <a href={{item.uri}} class='social-icon social-icon--twitter'>
+                <i class="fab fa-twitter"></i></a>
+            {% endif %}
+            {% if 'instagram' in item.uri %}
+              <a href={{item.uri}} class='social-icon social-icon--instagram'>
+                <i class="fab fa-instagram"></i></a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </footer>
+      {# Author Social Info #}
+      {{content.comment}}
     </section>
   </div>
 </article>

@@ -1,0 +1,16 @@
+// to adjust section title go to _comment-form.scss
+// stile for the comment output
+.comment-box {
+  @include form-field;
+  margin: 2rem auto;
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    background-color: $light-blue;
+  }
+
+  &-text {
+    text-align: left;
+  }
+}
