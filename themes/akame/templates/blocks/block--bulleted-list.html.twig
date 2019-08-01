@@ -4,19 +4,19 @@
     'block-' ~ configuration.provider|clean_class,
     'block-' ~ plugin_id|clean_class,
     'l-vertical-space',
-    'section-highlight'
+    'section-highlight',
   ]
 %}
 <section {{ attributes.addClass(classes) }}>
   {{ title_suffix }}
   <div class="l-container why-choose">
     <div>
-      {{content.field_image}}
+      {{ content.field_image }}
     </div>
     <section>
       <header>
-        <h1>{{content.field_title.0['#context'].value|striptags}}</h1>
-        {{content.body}}
+        <h1>{{ content.field_title.0['#context'].value|striptags }}</h1>
+        {{ content.body }}
       </header>
       <ul class="why-choose__list">
         {% for key, item in content.field_unordered_list if key|first != '#' %}
