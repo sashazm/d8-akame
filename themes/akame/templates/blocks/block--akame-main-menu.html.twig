@@ -36,24 +36,24 @@
     'block',
     'block-menu',
     'navigation',
-    'header-main__nav'
+    'header-main__nav',
   ]
 %}
+
 {% set heading_id = attributes.id ~ '-menu'|clean_id %}
 {{ title_suffix }}
 <nav role="navigation" aria-labelledby="{{ heading_id }}"{{ attributes.addClass(classes)|without('role', 'aria-labelledby') }}>
-  <!-- Mobile Menu Toggle -->
+  {# Mobile Menu Toggle #}
   <div class="nav-toggle nav-toggle--mobile nav-toggle--active js-menu-toggle">
     <span class="nav-toggle__icon"></span>
   </div>
-  {# Menu. #}
+  {# Menu #}
   {% block content %}
     {{ content }}
   {% endblock %}
-  <!-- Cart Icon -->
+  {# Cart Icon #}
   <a href="#" class="header-main__cart"><i class="fas fa-shopping-cart"></i></a>
-
-  <!-- Book Link -->
+  {# Book Link  #}
   <div class="header-main__booking">
     <a href="#" class="button">Book Now</a>
   </div>
